@@ -86,8 +86,13 @@ h1{font-family:"Amiri",serif;font-weight:700;font-size:clamp(44px,8vw,72px);marg
 .btn{position:relative;font:500 14px "Noto Kufi Arabic",sans-serif;padding:9px 20px;border:0;border-radius:2px;background:var(--gold);color:#fff;cursor:pointer}
 .btn:hover{background:var(--gold-dk)}
 .btn[hidden]{display:none}
-audio{position:relative;width:100%;max-width:520px;margin-top:6px}
-audio[hidden]{display:none}
+audio{display:none}
+.ctl{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:4px}
+.ctl[hidden]{display:none}
+.btn.play{font-size:16px;padding:11px 28px;min-width:180px}
+.bar{display:flex;align-items:center;gap:10px;width:100%;max-width:440px;direction:ltr}
+.bar input{flex:1;accent-color:var(--gold)}
+.time{font:400 13px "Lato",sans-serif;color:var(--muted);min-width:84px;text-align:right}
 .diag{position:relative;margin-top:12px;font:400 12px "Lato",sans-serif;color:var(--muted);text-align:left;direction:ltr}
 .diag summary{cursor:pointer;color:var(--gold-dk);text-align:center;direction:rtl;font-family:"Noto Kufi Arabic",sans-serif}
 .diag pre{white-space:pre-wrap;word-break:break-word;background:var(--marble);border:1px solid var(--line);padding:10px;margin:8px 0 0;font:12px/1.6 ui-monospace,monospace}
@@ -167,7 +172,11 @@ footer a{color:var(--gold-dk);text-decoration:none;border-bottom:1px solid var(-
     <div class="chips" id="chips" role="group" aria-label="لغة التسجيل"></div>
     <p class="status" id="hs-status" role="status">جارٍ التحقق من وجود سماعة أذن…</p>
     <button class="btn" id="hs-check" type="button" hidden>تحقّق من السماعة</button>
-    <audio id="player" controls preload="none" hidden></audio>
+    <div class="ctl" id="ctl" hidden>
+      <button class="btn play" id="play" type="button" aria-pressed="false">▶ استمع الآن</button>
+      <div class="bar"><input type="range" id="seek" min="0" max="0" value="0" step="1" aria-label="موضع التشغيل"><span class="time" id="time">0:00</span></div>
+    </div>
+    <audio id="player" preload="metadata" playsinline></audio>
     <details class="diag" id="diag" hidden><summary>تفاصيل تقنية (أرسلها إن لم تُكتشف السماعة)</summary><pre id="diag-txt"></pre></details>
   </section>
 
@@ -237,28 +246,38 @@ footer a{color:var(--gold-dk);text-decoration:none;border-bottom:1px solid var(-
     const b = e.target.closest(".chip"); if (!b) return;
     current = b.dataset.k;
     chips.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.k === current));
-    if (unlocked) { player.src = D[current].audio; player.play().catch(()=>{}); }
+    if (unlocked) { player.src = D[current].audio; player.load(); player.play().catch(()=>{}); }
   });
+
+  /* custom player: big play button + seek bar (native controls can render invisibly on some phones) */
+  const ctl = $("ctl"), playBtn = $("play"), seek = $("seek"), timeEl = $("time");
+  const fmt = t => { t = Math.max(0, Math.floor(t||0)); return Math.floor(t/60) + ":" + String(t%60).padStart(2,"0"); };
+  function paintPlay(){ const on = !player.paused; playBtn.textContent = on ? "❚❚ إيقاف مؤقت" : "▶ استمع الآن"; playBtn.setAttribute("aria-pressed", on); }
+  player.addEventListener("play", paintPlay); player.addEventListener("pause", paintPlay); player.addEventListener("ended", paintPlay);
+  player.addEventListener("loadedmetadata", () => { seek.max = Math.floor(player.duration||0); timeEl.textContent = "0:00 / " + fmt(player.duration); });
+  player.addEventListener("timeupdate", () => { if (!seek.matches(":active")) seek.value = Math.floor(player.currentTime); timeEl.textContent = fmt(player.currentTime) + " / " + fmt(player.duration); });
+  seek.addEventListener("input", () => { player.currentTime = +seek.value; });
 
   // Names that identify personal listening devices (wired or Bluetooth), not speakers.
   const HEADSET = /head ?(set|phone)|ear ?(phone|bud|piece)|in-?ear|bluetooth|airpods|buds|hands-?free|\bW[HF]-|سماع|écouteur|casque|kopfh|auricular|fone/i;
   const SPEAKER = /speaker|haut-?parleur|مكبر/i;
+  let granted = false;
 
   function lock(msg){
     unlocked = false;
     if (!player.paused) player.pause();
-    player.removeAttribute("src"); player.load();
-    player.hidden = true;
+    ctl.hidden = true;
     status.classList.remove("ok");
     status.textContent = msg;
   }
   function unlock(){
-    if (!unlocked) { player.src = D[current].audio; }
+    if (!unlocked || !player.getAttribute("src")) { player.src = D[current].audio; player.load(); }
     unlocked = true;
-    player.hidden = false;
+    ctl.hidden = false;
     checkBtn.hidden = true;
     status.classList.add("ok");
-    status.textContent = "تم اكتشاف سماعة الأذن — يمكنك الاستماع الآن.";
+    status.textContent = "تم اكتشاف سماعة الأذن — اضغط «استمع الآن».";
+    paintPlay();
   }
 
   async function detect(){
@@ -271,13 +290,26 @@ footer a{color:var(--gold-dk);text-decoration:none;border-bottom:1px solid var(-
     return ds.some(d => (d.kind === "audiooutput" || d.kind === "audioinput")
                         && HEADSET.test(d.label) && !SPEAKER.test(d.label)) ? "yes" : "no";
   }
-
-  async function refresh(){
-    const r = await detect();
+  // Safari only shows device names while access is fresh, so re-open (and immediately close) the device list when needed.
+  async function verify(){
+    let r = await detect();
+    if (r === "unknown" && granted) {
+      try { const s = await navigator.mediaDevices.getUserMedia({audio:true}); r = await detect(); s.getTracks().forEach(t => t.stop()); } catch(e) {}
+    }
     showDiag(r);
+    return r;
+  }
+
+  const MSG_NO = "التشغيل متاح فقط عند توصيل سماعة أذن سلكية أو بلوتوث. وصّل السماعة ثم اضغط «تحقّق من السماعة».";
+  const MSG_UNKNOWN = "للتأكد من توصيل السماعة، اضغط «تحقّق من السماعة» واسمح للمتصفح بالوصول إلى أجهزة الصوت (لا يُسجَّل أي صوت).";
+  async function refresh(){
+    const r = await verify();
     if (r === "yes") return unlock();
-    if (r === "no") { checkBtn.hidden = false; return lock("التشغيل متاح فقط عند توصيل سماعة أذن سلكية أو بلوتوث. وصّل السماعة ثم اضغط «تحقّق من السماعة»."); }
-    if (r === "unknown") { checkBtn.hidden = false; return lock("للتأكد من توصيل السماعة، اضغط «تحقّق من السماعة» واسمح للمتصفح بالوصول إلى أجهزة الصوت (لا يُسجَّل أي صوت)."); }
+    if (r === "no") { checkBtn.hidden = false; return lock(MSG_NO); }
+    if (r === "unknown") {
+      if (unlocked) return;            // cannot tell right now: keep the current state rather than flicker
+      checkBtn.hidden = false; return lock(MSG_UNKNOWN);
+    }
     checkBtn.hidden = true;
     lock("هذا المتصفح لا يتيح كشف السماعة، لذلك التشغيل غير متاح هنا.");
   }
@@ -286,20 +318,26 @@ footer a{color:var(--gold-dk);text-decoration:none;border-bottom:1px solid var(-
     // Device names are hidden until the browser grants audio-device access; the mic stream is closed immediately.
     try {
       const s = await navigator.mediaDevices.getUserMedia({audio:true});
-      s.getTracks().forEach(t => t.stop());
+      granted = true;
+      const r = await detect(); s.getTracks().forEach(t => t.stop()); showDiag(r);
+      if (r === "yes") return unlock();
+      return lock(MSG_NO);
     } catch(e) {
       diagErr = e.name + ": " + e.message;
       await detect(); showDiag("permission-failed");
       checkBtn.hidden = true;
       return lock("لم يُسمح بالتحقق من أجهزة الصوت، لذلك التشغيل غير متاح.");
     }
-    refresh();
   });
 
-  player.addEventListener("play", async () => { if ((await detect()) !== "yes") { refresh(); } });
-  player.addEventListener("error", () => { if (unlocked && player.getAttribute("src")) { status.classList.remove("ok"); status.textContent = "تعذّر تحميل التسجيل الصوتي من موقع الأوقاف."; } });
+  playBtn.addEventListener("click", () => {
+    if (!unlocked) return;
+    if (!player.paused) { player.pause(); return; }
+    player.play().catch(err => { status.classList.remove("ok"); status.textContent = "تعذّر تشغيل التسجيل: " + (err && err.name || ""); });
+  });
+  player.addEventListener("error", () => { if (unlocked) { status.classList.remove("ok"); status.textContent = "تعذّر تحميل التسجيل الصوتي من موقع الأوقاف."; } });
   if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) {
-    navigator.mediaDevices.addEventListener("devicechange", refresh);
+    navigator.mediaDevices.addEventListener("devicechange", () => setTimeout(refresh, 400));
   }
   refresh();
 })();
