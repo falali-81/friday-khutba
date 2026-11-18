@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>خطبة الجمعة — قيمة المصداقية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Kufi+Arabic:wght@400;500;600&family=Noto+Nastaliq+Urdu:wght@500&family=Cormorant+Garamond:wght@500;600&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --marble:#f8f5ee; --ivory:#fffdf8; --sand:#efe7d6;
+  --gold:#a8915a; --gold-dk:#8a7442; --gold-lt:#d9c99c;
+  --brown:#4a3b28; --muted:#7d6f5b; --line:#e3d8c0;
+}
+*{box-sizing:border-box}
+html{direction:rtl}
+body{margin:0;min-height:100vh;color:var(--brown);font-family:"Noto Kufi Arabic",system-ui,sans-serif;direction:rtl;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #fff 0%, transparent 60%),
+    linear-gradient(180deg,var(--marble),var(--sand));
+  display:flex;flex-direction:column;align-items:center;padding:0 18px 40px;overflow-x:hidden}
+
+/* top gold band */
+.band{width:calc(100% + 36px);height:8px;background:linear-gradient(90deg,var(--gold-dk),var(--gold),var(--gold-lt),var(--gold),var(--gold-dk))}
+
+/* floral border motif */
+.floral{position:fixed;top:0;height:100vh;width:120px;opacity:.55;pointer-events:none}
+.floral.l{left:0}.floral.r{right:0;transform:scaleX(-1)}
+@media (max-width:900px){.floral{display:none}}
+
+.wrap{position:relative;width:100%;max-width:780px;text-align:center;padding-top:46px}
+
+.arch{width:150px;height:auto;display:block;margin:0 auto 6px}
+.eyebrow{display:flex;align-items:center;justify-content:center;gap:12px;color:var(--gold-dk);font-size:14px;letter-spacing:.04em}
+.eyebrow i{display:block;width:40px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+.eyebrow i:last-child{transform:scaleX(-1)}
+.eyebrow .lat{font-family:"Lato",sans-serif;text-transform:uppercase;font-size:12px;letter-spacing:.16em}
+h1{font-family:"Amiri",serif;font-weight:700;font-size:clamp(44px,8vw,72px);margin:10px 0 0;line-height:1.3;color:var(--brown)}
+.sub{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:600;color:var(--gold-dk);margin:0;letter-spacing:.02em}
+.date{display:inline-flex;gap:10px;align-items:center;margin:18px 0 38px;padding:8px 18px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.6);font-size:14px;color:var(--muted)}
+.date .sep{width:4px;height:4px;background:var(--gold);transform:rotate(45deg)}
+.date .lat{font-family:"Lato",sans-serif}
+
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+@media (max-width:540px){.grid{grid-template-columns:1fr}}
+
+.lang{position:relative;background:var(--ivory);border:1px solid var(--line);border-radius:4px;padding:26px 22px 20px;
+  box-shadow:0 1px 0 #fff inset,0 18px 34px -26px rgba(74,59,40,.45);transition:transform .25s,box-shadow .25s,border-color .25s}
+/* inner gold frame */
+.lang::before{content:"";position:absolute;inset:7px;border:1px solid var(--gold-lt);border-radius:2px;pointer-events:none;transition:border-color .25s}
+/* pointed-arch top ornament */
+.lang::after{content:"";position:absolute;top:-1px;left:50%;width:46px;height:12px;transform:translateX(-50%);
+  background:linear-gradient(var(--gold),var(--gold)) center/100% 2px no-repeat}
+.lang:hover,.lang:focus-within{transform:translateY(-4px);border-color:var(--gold-lt);box-shadow:0 26px 40px -24px rgba(74,59,40,.55)}
+.lang:hover::before,.lang:focus-within::before{border-color:var(--gold)}
+
+.main{display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;color:inherit}
+.main:focus-visible{outline:2px solid var(--gold);outline-offset:6px}
+.medal{width:54px;height:54px;margin-bottom:8px}
+.name{font-size:26px;font-weight:600;color:var(--brown)}
+.t{font-size:15px;color:var(--muted)}
+.go{margin-top:12px;display:inline-flex;align-items:center;gap:8px;padding:9px 20px;border-radius:2px;background:var(--gold);color:#fff;font-size:14px;font-weight:500;transition:background .2s}
+.lang:hover .go{background:var(--gold-dk)}
+
+.ur .name,.ur .t,.ur .go{font-family:"Noto Nastaliq Urdu",serif;line-height:2.1}
+.ur .go{padding:4px 20px 10px}
+.en .name,.fr .name{font-family:"Cormorant Garamond",serif;font-size:30px}
+.en .t,.fr .t,.en .go,.fr .go{font-family:"Lato",sans-serif}
+.en .go,.fr .go{text-transform:uppercase;letter-spacing:.1em;font-size:12px}
+
+/* listen panel — same ivory card + gold frame language */
+.listen{position:relative;margin:0 0 22px;background:var(--ivory);border:1px solid var(--line);border-radius:4px;padding:22px 22px 18px;
+  box-shadow:0 1px 0 #fff inset,0 18px 34px -26px rgba(74,59,40,.45)}
+.listen::before{content:"";position:absolute;inset:7px;border:1px solid var(--gold-lt);border-radius:2px;pointer-events:none}
+.listen h2{margin:0 0 4px;font-size:18px;font-weight:600;color:var(--brown);display:flex;align-items:center;justify-content:center;gap:10px}
+.listen h2 svg{width:22px;height:22px}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:12px 0 10px;position:relative}
+.chip{font:500 14px "Noto Kufi Arabic",sans-serif;padding:6px 16px;border:1px solid var(--gold-lt);border-radius:999px;background:transparent;color:var(--gold-dk);cursor:pointer}
+.chip.ur{font-family:"Noto Nastaliq Urdu",serif;padding:2px 16px 8px}
+.chip.en{font-family:"Lato",sans-serif}
+.chip[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#fff}
+.chip:focus-visible,.btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.status{position:relative;font-size:14px;color:var(--muted);margin:6px 0 10px;line-height:1.8}
+.status.ok{color:#5b6b3a}
+.btn{position:relative;font:500 14px "Noto Kufi Arabic",sans-serif;padding:9px 20px;border:0;border-radius:2px;background:var(--gold);color:#fff;cursor:pointer}
+.btn:hover{background:var(--gold-dk)}
+.btn[hidden]{display:none}
+audio{position:relative;width:100%;max-width:520px;margin-top:6px}
+audio[hidden]{display:none}
+.diag{position:relative;margin-top:12px;font:400 12px "Lato",sans-serif;color:var(--muted);text-align:left;direction:ltr}
+.diag summary{cursor:pointer;color:var(--gold-dk);text-align:center;direction:rtl;font-family:"Noto Kufi Arabic",sans-serif}
+.diag pre{white-space:pre-wrap;word-break:break-word;background:var(--marble);border:1px solid var(--line);padding:10px;margin:8px 0 0;font:12px/1.6 ui-monospace,monospace}
+
+.divider{width:220px;height:20px;margin:40px auto 10px;display:block}
+footer{font-size:13px;color:var(--muted)}
+footer a{color:var(--gold-dk);text-decoration:none;border-bottom:1px solid var(--gold-lt)}
+</style>
+
+<style>.diag{display:none!important}</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- 8-point star medallion -->
+    <symbol id="medal" viewBox="0 0 60 60">
+      <g fill="none" stroke="#a8915a" stroke-width="1.2">
+        <rect x="12" y="12" width="36" height="36"/>
+        <rect x="12" y="12" width="36" height="36" transform="rotate(45 30 30)"/>
+        <circle cx="30" cy="30" r="11"/>
+      </g>
+      <circle cx="30" cy="30" r="3" fill="#a8915a"/>
+    </symbol>
+    <!-- headphones -->
+    <symbol id="hp" viewBox="0 0 24 24">
+      <g fill="none" stroke="#a8915a" stroke-width="1.6" stroke-linecap="round">
+        <path d="M4 15v-3a8 8 0 0 1 16 0v3"/>
+        <rect x="3" y="14" width="4" height="7" rx="1.5" fill="#efe3c3"/>
+        <rect x="17" y="14" width="4" height="7" rx="1.5" fill="#efe3c3"/>
+      </g>
+    </symbol>
+    <!-- floral vine (inlay-style) -->
+    <symbol id="vine" viewBox="0 0 120 240">
+      <g fill="none" stroke="#c4ae78" stroke-width="1.2" stroke-linecap="round">
+        <path d="M30 0 C70 40, -10 80, 30 120 S 70 200, 30 240"/>
+        <path d="M38 30 c18 -6 30 4 34 16 c-14 2 -28 -4 -34 -16z" fill="#efe3c3"/>
+        <path d="M22 92 c-16 -8 -12 -26 -2 -32 c6 10 8 22 2 32z" fill="#efe3c3"/>
+        <path d="M40 150 c18 -2 28 12 28 24 c-14 -2 -26 -10 -28 -24z" fill="#efe3c3"/>
+        <path d="M24 210 c-16 -6 -14 -24 -4 -30 c6 10 8 20 4 30z" fill="#efe3c3"/>
+        <circle cx="66" cy="48" r="5" fill="#e6d4a4"/><circle cx="66" cy="48" r="2" fill="#a8915a" stroke="none"/>
+        <circle cx="62" cy="178" r="5" fill="#e6d4a4"/><circle cx="62" cy="178" r="2" fill="#a8915a" stroke="none"/>
+        <path d="M14 60 l4 -6 l4 6 l-4 6z" fill="#d9c99c"/>
+        <path d="M12 180 l4 -6 l4 6 l-4 6z" fill="#d9c99c"/>
+      </g>
+    </symbol>
+    <pattern id="vines" width="120" height="240" patternUnits="userSpaceOnUse">
+      <use href="#vine" width="120" height="240"/>
+    </pattern>
+  </defs>
+</svg>
+
+<svg class="floral l" aria-hidden="true"><rect width="100%" height="100%" fill="url(#vines)"/></svg>
+<svg class="floral r" aria-hidden="true"><rect width="100%" height="100%" fill="url(#vines)"/></svg>
+
+<div class="band"></div>
+
+<div class="wrap">
+  <!-- domes & minarets line art -->
+  <svg class="arch" viewBox="0 0 160 80" fill="none" stroke="#a8915a" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+    <path d="M10 78V30M10 30l-3-4h6zM10 22v-6M10 16a1.5 1.5 0 1 0 0.01 0"/>
+    <path d="M150 78V30M150 30l-3-4h6zM150 22v-6M150 16a1.5 1.5 0 1 0 0.01 0"/>
+    <path d="M40 78V58c0-10 8-16 14-18 0 0 -2 4 0 6M120 78V58c0-10-8-16-14-18 0 0 2 4 0 6"/>
+    <path d="M50 78V54c0-18 14-30 30-36 16 6 30 18 30 36v24"/>
+    <path d="M80 18V8M80 8a2 2 0 1 0 .01 0"/>
+    <path d="M70 78V66a10 10 0 0 1 20 0v12"/>
+    <path d="M4 78h152"/>
+  </svg>
+
+  <div class="eyebrow"><i></i><span>خطبة الجمعة</span><span class="lat">Friday Sermon</span><i></i></div>
+  <h1 id="title"></h1>
+  <p class="sub" id="sub"></p>
+  <div class="date"><span id="date-ar"></span><span class="sep"></span><span class="lat" id="date-en"></span></div>
+
+  <section class="listen" id="listen" hidden>
+    <h2><svg aria-hidden="true"><use href="#hp"/></svg>استمع إلى الخطبة</h2>
+    <div class="chips" id="chips" role="group" aria-label="لغة التسجيل"></div>
+    <p class="status" id="hs-status" role="status">جارٍ التحقق من وجود سماعة أذن…</p>
+    <button class="btn" id="hs-check" type="button" hidden>تحقّق من السماعة</button>
+    <audio id="player" controls preload="none" hidden></audio>
+    <details class="diag" id="diag" hidden><summary>تفاصيل تقنية (أرسلها إن لم تُكتشف السماعة)</summary><pre id="diag-txt"></pre></details>
+  </section>
+
+  <div class="grid" id="grid"></div>
+
+  <svg class="divider" viewBox="0 0 220 20" aria-hidden="true"><g stroke="#a8915a" fill="none" stroke-width="1"><path d="M0 10h88M132 10h88"/><path d="M110 2l8 8-8 8-8-8z" fill="#efe3c3"/><path d="M94 10l4-4 4 4-4 4zM118 10l4-4 4 4-4 4z" fill="#d9c99c"/></g></svg>
+  <footer>المصدر · Source: <a href="https://www.awqaf.gov.ae/friday-khutba-details/" target="_blank" rel="noopener">الهيئة العامة للشؤون الإسلامية والأوقاف والزكاة</a></footer>
+</div>
+<!-- KHUTBA_DATA:START — this block is updated automatically each week -->
+<script id="khutba-data" type="application/json">
+{
+  "date_ar": "الجمعة 13 نوفمبر 2026",
+  "date_en": "Friday, 13 November 2026",
+  "ar": {"title": "قيمة المصداقية", "pdf": "https://www.awqaf.gov.ae/web.files/KhutbaAttachment/%D9%82%D9%8A%D9%85%D8%A9%20%D8%A7%D9%84%D9%85%D8%B5%D8%AF%D8%A7%D9%82%D9%8A%D8%A9%20%D9%85%D8%B9%D8%AF%D9%84%D8%A9=.pdf", "audio": "https://www.awqaf.gov.ae/web.files/KhutbaAttachment/AUD-20261111-WA0001.mp3"},
+  "en": {"title": "The Value of Credibility", "pdf": "https://www.awqaf.gov.ae/web.files/KhutbaAttachment/The%20Value%20of%20Credibility.pdf", "audio": "https://www.awqaf.gov.ae/web.files/KhutbaAttachment/English%20Khutba%2013-11-2026.mp3"},
+  "ur": {"title": "ساکھ اور اعتبار کی قدر", "pdf": "https://www.awqaf.gov.ae/web.files/KhutbaAttachment/%D8%AE%D8%B7%D8%A8%D8%A9%20%D9%82%D9%8A%D9%85%D8%A9%20%D8%A7%D9%84%D9%85%D8%B5%D8%AF%D8%A7%D9%82%D9%8A%D8%A9-%20%D8%A8%D9%84%D8%BA%D8%A9%20%D8%A7%D9%84%D8%A3%D9%88%D8%B1%D8%AF%D9%88.pdf", "audio": "https://www.awqaf.gov.ae/web.files/KhutbaAttachment/Urdu%20Khutba%2013-11-2026.mp3"},
+  "fr": {"title": "La valeur de la crédibilité", "pdf": "https://www.awqaf.gov.ae/web.files/KhutbaAttachment/%D9%82%D9%8A%D9%85%D8%A9%20%D8%A7%D9%84%D9%85%D8%B5%D8%AF%D8%A7%D9%82%D9%8A%D8%A9-%D8%A8%D8%A7%D9%84%D9%84%D8%BA%D8%A9%20%D8%A7%D9%84%D9%81%D8%B1%D9%86%D8%B3%D9%8A%D8%A9.La%20valeur%20de%20la%20cr%C3%A9dibilit%C3%A9%20docx.pdf"}
+}
+</script>
+<!-- KHUTBA_DATA:END -->
+<script>
+(function(){
+  const D = JSON.parse(document.getElementById("khutba-data").textContent);
+  const SOURCE = "https://www.awqaf.gov.ae/friday-khutba-details/";
+  const L = [
+    {k:"ar", name:"العربية",  go:"اقرأ الخطبة",     dir:"rtl"},
+    {k:"en", name:"English",  go:"Read the sermon", dir:"ltr"},
+    {k:"ur", name:"اردو",     go:"خطبہ پڑھیں",      dir:"rtl"},
+    {k:"fr", name:"Français", go:"Lire le sermon",  dir:"ltr"}
+  ];
+  const esc = s => String(s||"").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const ok = u => /^https:\/\/(www\.)?awqaf\.gov\.ae\//.test(u||"");
+  const safe = u => ok(u) ? u : SOURCE;
+  document.getElementById("title").textContent = D.ar.title;
+  document.getElementById("sub").textContent = D.en.title;
+  document.getElementById("date-ar").textContent = D.date_ar;
+  document.getElementById("date-en").textContent = D.date_en;
+  document.title = "خطبة الجمعة — " + D.ar.title;
+  document.getElementById("grid").innerHTML = L.filter(l => D[l.k]).map(l => `
+    <div class="lang ${l.k}" dir="${l.dir}">
+      <a class="main" href="${esc(safe(D[l.k].pdf))}" target="_blank" rel="noopener">
+        <svg class="medal"><use href="#medal"/></svg>
+        <span class="name">${l.name}</span>
+        <span class="t">${esc(D[l.k].title)}</span>
+        <span class="go">${l.go}</span>
+      </a>
+    </div>`).join("");
+
+  /* ---------- Audio: plays only while a headset / Bluetooth earphones are detected ---------- */
+  const withAudio = L.filter(l => D[l.k] && ok(D[l.k].audio));
+  if (!withAudio.length) return;
+  const $ = id => document.getElementById(id);
+  const panel = $("listen"), chips = $("chips"), status = $("hs-status"), checkBtn = $("hs-check"), player = $("player");
+  panel.hidden = false;
+  let current = withAudio[0].k, unlocked = false, diagDevices = "(not read yet)", diagErr = "";
+  function showDiag(result){
+    let mic = "n/a";
+    try { const fp = document.permissionsPolicy || document.featurePolicy; if (fp) mic = fp.allowsFeature("microphone"); } catch(e) {}
+    $("diag").hidden = false;
+    $("diag-txt").textContent = "result: " + result + "\nmicrophone allowed by page policy: " + mic +
+      (diagErr ? "\ngetUserMedia error: " + diagErr : "") + "\n\ndevices:\n" + diagDevices + "\n\nUA: " + navigator.userAgent;
+  }
+
+  chips.innerHTML = withAudio.map(l =>
+    `<button type="button" class="chip ${l.k}" data-k="${l.k}" aria-pressed="${l.k===current}">${l.name}</button>`).join("");
+  chips.addEventListener("click", e => {
+    const b = e.target.closest(".chip"); if (!b) return;
+    current = b.dataset.k;
+    chips.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.k === current));
+    if (unlocked) { player.src = D[current].audio; player.play().catch(()=>{}); }
+  });
+
+  // Names that identify personal listening devices (wired or Bluetooth), not speakers.
+  const HEADSET = /head ?(set|phone)|ear ?(phone|bud|piece)|in-?ear|bluetooth|airpods|buds|hands-?free|\bW[HF]-|سماع|écouteur|casque|kopfh|auricular|fone/i;
+  const SPEAKER = /speaker|haut-?parleur|مكبر/i;
+
+  function lock(msg){
+    unlocked = false;
+    if (!player.paused) player.pause();
+    player.removeAttribute("src"); player.load();
+    player.hidden = true;
+    status.classList.remove("ok");
+    status.textContent = msg;
+  }
+  function unlock(){
+    if (!unlocked) { player.src = D[current].audio; }
+    unlocked = true;
+    player.hidden = false;
+    checkBtn.hidden = true;
+    status.classList.add("ok");
+    status.textContent = "تم اكتشاف سماعة الأذن — يمكنك الاستماع الآن.";
+  }
+
+  async function detect(){
+    const md = navigator.mediaDevices;
+    if (!md || !md.enumerateDevices) return "unsupported";
+    let ds;
+    try { ds = await md.enumerateDevices(); } catch(e) { diagErr = "enumerateDevices: " + e.name + " " + e.message; return "unsupported"; }
+    diagDevices = ds.length ? ds.map(d => d.kind + ": " + (d.label || "(no label)")).join("\n") : "(none)";
+    if (!ds.some(d => d.label)) return "unknown";
+    return ds.some(d => (d.kind === "audiooutput" || d.kind === "audioinput")
+                        && HEADSET.test(d.label) && !SPEAKER.test(d.label)) ? "yes" : "no";
+  }
+
+  async function refresh(){
+    const r = await detect();
+    showDiag(r);
+    if (r === "yes") return unlock();
+    if (r === "no") { checkBtn.hidden = false; return lock("التشغيل متاح فقط عند توصيل سماعة أذن سلكية أو بلوتوث. وصّل السماعة ثم اضغط «تحقّق من السماعة»."); }
+    if (r === "unknown") { checkBtn.hidden = false; return lock("للتأكد من توصيل السماعة، اضغط «تحقّق من السماعة» واسمح للمتصفح بالوصول إلى أجهزة الصوت (لا يُسجَّل أي صوت)."); }
+    checkBtn.hidden = true;
+    lock("هذا المتصفح لا يتيح كشف السماعة، لذلك التشغيل غير متاح هنا.");
+  }
+
+  checkBtn.addEventListener("click", async () => {
+    // Device names are hidden until the browser grants audio-device access; the mic stream is closed immediately.
+    try {
+      const s = await navigator.mediaDevices.getUserMedia({audio:true});
+      s.getTracks().forEach(t => t.stop());
+    } catch(e) {
+      diagErr = e.name + ": " + e.message;
+      await detect(); showDiag("permission-failed");
+      checkBtn.hidden = true;
+      return lock("لم يُسمح بالتحقق من أجهزة الصوت، لذلك التشغيل غير متاح.");
+    }
+    refresh();
+  });
+
+  player.addEventListener("play", async () => { if ((await detect()) !== "yes") { refresh(); } });
+  player.addEventListener("error", () => { if (unlocked && player.getAttribute("src")) { status.classList.remove("ok"); status.textContent = "تعذّر تحميل التسجيل الصوتي من موقع الأوقاف."; } });
+  if (navigator.mediaDevices && navigator.mediaDevices.addEventListener) {
+    navigator.mediaDevices.addEventListener("devicechange", refresh);
+  }
+  refresh();
+})();
+</script>
+</body>
+</html>
